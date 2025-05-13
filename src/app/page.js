@@ -8,8 +8,8 @@ import { ThemeProvider } from "@/context/ThemeContext";
 const sections = [
   {
     id: 1,
-    title: "Welcome to Summer",
-    description: "Feel the heat, bask in the glow of endless days and vibrant energy.",
+    title: "Experience Summer 2024",
+    description: "Discover vibrant adventures, sunny escapes, and unforgettable memories waiting to be made this season.",
     celestial: "sun",
     theme: "light",
     position: "left",
@@ -17,8 +17,8 @@ const sections = [
   },
   {
     id: 2,
-    title: "Summer Nights",
-    description: "The calm moonlight shimmers over quiet landscapes, bringing cool relief.",
+    title: "Magical Summer Nights",
+    description: "When the sun sets, the summer truly awakens. Explore nighttime festivals, beachside bonfires, and starlit conversations.",
     celestial: "moon",
     theme: "dark",
     position: "right",
@@ -26,8 +26,8 @@ const sections = [
   },
   {
     id: 3,
-    title: "Beach Days",
-    description: "Golden sands, blue waters, and the warm embrace of sunshine.",
+    title: "Coastal Retreats & Adventures",
+    description: "From serene shorelines to thrilling water sports, our curated beach experiences offer the perfect summer escape for everyone.",
     celestial: "sun",
     theme: "light",
     position: "left",
@@ -35,8 +35,8 @@ const sections = [
   },
   {
     id: 4,
-    title: "Starry Summer",
-    description: "As day turns to night, the sky reveals its cosmic wonders.",
+    title: "Summer Under the Stars",
+    description: "Join our guided astronomical tours and camping experiences where the night sky becomes your personal planetarium.",
     celestial: "moon",
     theme: "dark",
     position: "right",

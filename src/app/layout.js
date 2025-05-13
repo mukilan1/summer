@@ -1,5 +1,8 @@
+"use client"; // Add this directive at the top
+
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { useEffect } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,16 +14,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "Summer Vibes",
-  description: "A beautiful summer-themed landing page with animated scroll sections",
-};
+// Can't use metadata with "use client" directive
+// Will need to use next/head for setting metadata in client components
 
 export default function RootLayout({ children }) {
+  // Now you can use useEffect here if needed
+  
   return (
-    <html lang="en" className="light-theme">
+    <html lang="en" className="light-theme" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
       >
         {children}
       </body>
