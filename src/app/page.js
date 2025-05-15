@@ -13,7 +13,7 @@ const sections = [
     celestial: "sun",
     theme: "light",
     position: "left",
-    bgColor: "bg-gradient-to-b from-sky-100 to-sky-200"
+    bgColor: "bg-gradient-to-b from-sky-50 via-sky-100 to-sky-200"
   },
   {
     id: 2,

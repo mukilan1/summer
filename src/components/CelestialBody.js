@@ -1,8 +1,7 @@
 "use client";
+import { useRef, useState, useEffect } from 'react';
 
-import { useEffect, useRef, useState } from "react";
-
-const CelestialBody = ({ type, position, isActive }) => {
+const CelestialBody = ({ type, position, isActive, isHero = false }) => {
   const elementRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [stars, setStars] = useState([]);
@@ -98,6 +97,124 @@ const CelestialBody = ({ type, position, isActive }) => {
       elementRef.current.style.transform = `translate(${xPos}, 0)`;
     }
   }, [isActive, position]);
+
+  // Hero-specific sun rendering
+  if (type === 'sun' && isHero) {
+    return (
+      <div
+        ref={elementRef}
+        className="absolute inset-0 transition-all duration-1000 ease-in-out opacity-0 overflow-hidden"
+        style={{
+          transform: `translate(${position === 'left' ? '-100%' : '100%'}, 0)`,
+          pointerEvents: 'none'
+        }}
+      >
+        {/* Enhanced hero sun */}
+        <div className="absolute w-full h-full">
+          {stars.filter(star => star.id?.startsWith('static')).map(star => (
+            <div
+              key={star.id}
+              className="absolute rounded-full bg-white"
+              style={{
+                width: `${star.size}px`,
+                height: `${star.size}px`,
+                top: star.top,
+                left: star.left,
+                opacity: star.opacity * (1 - scrollProgress * 0.7), // Stars fade as you scroll
+                boxShadow: star.size > 1 ? `0 0 ${star.size + 1}px ${star.size - 1}px rgba(255,255,255,0.7)` : 'none'
+              }}
+            />
+          ))}
+        </div>
+        
+        {/* Hero-specific sunburst */}
+        <div 
+          className="absolute transition-all duration-1000 ease-out"
+          style={{
+            width: '120%',
+            height: '120%',
+            top: position === 'left' ? '0%' : '-10%',
+            left: position === 'left' ? '5%' : '-15%',
+            opacity: 1 - scrollProgress * 0.8,
+            zIndex: 2
+          }}
+        >
+          <div className="relative w-full h-full">
+            <div className="absolute inset-0 rounded-full bg-gradient-radial from-yellow-200 via-yellow-300 to-transparent opacity-40 animate-pulse-slow"></div>
+            <div className="absolute inset-0 rounded-full animate-spin-slow"
+              style={{ 
+                animationDuration: '120s',
+                background: 'conic-gradient(from 0deg, rgba(255,215,0,0) 0%, rgba(255,215,0,0.1) 20%, rgba(255,215,0,0) 40%, rgba(255,215,0,0.1) 60%, rgba(255,215,0,0) 80%, rgba(255,215,0,0.1) 100%)'
+              }}
+            ></div>
+          </div>
+        </div>
+        
+        {/* Hero sun with rays */}
+        <div
+          className={`absolute ${position === 'left' ? 'left-[5%]' : 'right-[5%]'} top-[15%] transition-all duration-1000 ease-out`}
+          style={{
+            width: '280px',
+            height: '280px',
+            transform: `scale(${1 - scrollProgress * 0.2}) translateY(${scrollProgress * 50}px)`,
+            zIndex: 5
+          }}
+        >
+          <div className="w-full h-full rounded-full relative overflow-visible">
+            {/* Base sun */}
+            <div
+              className="absolute inset-0 rounded-full animate-pulse-slow"
+              style={{
+                background: `radial-gradient(circle, 
+                  rgba(255, 245, 224, 1) 0%, 
+                  rgba(255, 215, 0, 1) 20%, 
+                  rgba(255, 165, 0, 1) 70%, 
+                  rgba(255, 140, 0, 0.8) 90%,
+                  rgba(255, 140, 0, 0) 100%)`,
+                boxShadow: `0 0 60px 30px rgba(255, 215, 0, 0.5),
+                           0 0 100px 60px rgba(255, 165, 0, 0.3),
+                           0 0 140px 90px rgba(255, 140, 0, 0.2)`,
+                animationDuration: '3s'
+              }}
+            />
+            
+            {/* Sun rays */}
+            <div className="absolute inset-[-50%] animate-spin-slow" style={{ animationDuration: '30s' }}>
+              {[...Array(12)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-full origin-bottom"
+                  style={{
+                    height: i % 2 === 0 ? '100%' : '80%',
+                    width: '4px',
+                    transform: `rotate(${i * 30}deg) translateY(-5%)`,
+                  }}
+                >
+                  <div 
+                    className="w-full h-full bg-gradient-to-t from-yellow-300 via-yellow-100 to-transparent rounded-full opacity-70"
+                    style={{ 
+                      clipPath: 'polygon(30% 0%, 70% 0%, 100% 100%, 0% 100%)',
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Center spotlight effect */}
+            <div 
+              className="absolute inset-[-20%] rounded-full"
+              style={{
+                background: 'radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0) 70%)',
+                filter: 'blur(20px)',
+                opacity: 0.7,
+                mixBlendMode: 'screen'
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Unified celestial body component with morph capabilities
   return (
