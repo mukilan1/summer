@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools">
+<application
+android:allowBackup="true"
+android:dataExtractionRules="@xml/data_extraction_rules"
+android:fullBackupContent="@xml/backup_rules"
+android:icon="@mipmap/ic_launcher"
+android:label="@string/app_name"
+android:roundIcon="@mipmap/ic_launcher_round"
+android:supportsRtl="true"
+android:theme="@style/Theme.Appp_ex_4"
+tools:targetApi="31">
+<activity
+android:name=".MainActivity"
+android:exported="true">
+<intent-filter>
+<action android:name="android.intent.action.MAIN" />
+<category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+<meta-data
+android:name="android.app.lib_name"
+android:value="" />
+</activity>
+</application>
+</manifest> 
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Activity_main.xml
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:padding="16dp">
+<EditText
+android:id="@+id/editTextUnits"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:hint="Enter units consumed"
+android:inputType="number" />
+<EditText
+android:id="@+id/editTextMobile"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:hint="Enter mobile number" />
+<Button
+android:id="@+id/buttonCalculate"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:text="Calculate bill" />
+<TextView
+android:id="@+id/textViewResult"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:textAppearance="?android:textAppearanceMedium" />
+</LinearLayout>
+
+
+?>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+MainActivity.java:
+package com.example.appp_ex_4;
+import android.os.Bundle;
+import android.telephony.SmsManager;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+public class MainActivity extends AppCompatActivity {
+EditText editTextUnits, editTextMobile;
+TextView textViewResult;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+super.onCreate(savedInstanceState);
+setContentView(R.layout.activity_main);
+editTextUnits = findViewById(R.id.editTextUnits);
+editTextMobile = findViewById(R.id.editTextMobile);
+textViewResult = findViewById(R.id.textViewResult);
+Button buttonCalculate = findViewById(R.id.buttonCalculate);
+buttonCalculate.setOnClickListener(new View.OnClickListener() {
+@Override
+public void onClick(View v) {
+int units = Integer.parseInt(editTextUnits.getText().toString());
+String mobile = editTextMobile.getText().toString();
+double billAmount = calculateBill(units);
+textViewResult.setText("Bill Amount: Rs. " + billAmount);
+sendSMS(mobile, "Your electricity bill amount is Rs. " + billAmount);
+}
+});
+}
+private double calculateBill(int units) {
+double billAmount = 0.0;
+if (units <= 100) {
+billAmount = units * 2.50;
+} else if (units <= 200) {
+billAmount = 100 * 2.50 + (units - 100) * 3.00;
+} else if (units <= 300) {
+billAmount = 100 * 2.50 + 100 * 3.00 + (units - 200) * 3.50;
+} else if (units > 300) {
+billAmount = 100 * 2.50 + 100 * 3.00 + 100 * 3.50 + (units - 300) * 4.00;
+}
+return billAmount;
+}
+private void sendSMS(String mobile, String message) {
+try {
+SmsManager smsManager = SmsManager.getDefault();
+smsManager.sendTextMessage(mobile, null, message, null, null);
+Toast.makeText(this, "SMS sent to " + mobile,
+Toast.LENGTH_SHORT).show();
+} catch (Exception ex) {
+Toast.makeText(this, "SMS failed to send",
+Toast.LENGTH_SHORT).show();
+ex.printStackTrace();
+}
+}
+}
+
