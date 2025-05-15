@@ -24,12 +24,29 @@
     opacity: 0;
     transform: translateX(0) translateY(0) rotate(var(--angle, -20deg));
   }
-  5% {
+  2% {
     opacity: 1;
   }
-  15%, 100% {
+  60% {
+    opacity: 1;
+    transform: translateX(60vw) translateY(var(--y-offset, 10vh)) rotate(var(--angle, -20deg));
+  }
+  100% {
     opacity: 0;
-    transform: translateX(300px) translateY(100px) rotate(var(--angle, -20deg));
+    transform: translateX(100vw) translateY(var(--y-offset, 20vh)) rotate(var(--angle, -20deg));
+  }
+}
+
+/* Additional fade animation for shooting star particles */
+@keyframes fade-particle {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: var(--opacity, 0.3);
+  }
+  100% {
+    opacity: 0;
   }
 }
 

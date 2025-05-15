@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Natural shooting star animation */
+@keyframes shooting-star {
+  0% {
+    opacity: 0;
+    transform: translateX(0) translateY(0);
+  }
+  2% {
+    opacity: 1;
+  }
+  20%, 60% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100vw) translateY(20vh);
+  }
+}
+
+/* Enhanced natural shooting star animation - replaces natural-shooting-star */
+@keyframes enhanced-shooting-star {
+  0% {
+    opacity: 0;
+    transform: translateX(0) translateY(0) rotate(var(--angle, -20deg));
+  }
+  2% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 1;
+    transform: translateX(60vw) translateY(var(--y-offset, 10vh)) rotate(var(--angle, -20deg));
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100vw) translateY(var(--y-offset, 20vh)) rotate(var(--angle, -20deg));
+  }
+}
+
+/* Shooting star particle fade animation */
+@keyframes fade-particle {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: var(--opacity, 0.3);
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Cloud drifting animations */
+@keyframes cloud-drift-right {
+  0% {
+    transform: translateX(-100%) scale(var(--scale, 1)) scaleY(var(--scaleY, 0.8));
+  }
+  100% {
+    transform: translateX(100vw) scale(var(--scale, 1)) scaleY(var(--scaleY, 0.8));
+  }
+}
+
+@keyframes cloud-drift-left {
+  0% {
+    transform: translateX(100vw) scale(var(--scale, 1)) scaleY(var(--scaleY, 0.8));
+  }
+  100% {
+    transform: translateX(-100%) scale(var(--scale, 1)) scaleY(var(--scaleY, 0.8));
+  }
+}
+
+/* Natural twinkling star animation */
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Natural slow floating animation */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-10px) translateX(5px);
+  }
+  50% {
+    transform: translateY(-5px) translateX(10px);
+  }
+  75% {
+    transform: translateY(-15px) translateX(-5px);
+  }
+}
+
+@keyframes float-slow-reverse {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(10px) translateX(-5px);
+  }
+  50% {
+    transform: translateY(5px) translateX(-10px);
+  }
+  75% {
+    transform: translateY(15px) translateX(5px);
+  }
+}
+
+/* Natural pulsing animation */
+@keyframes pulse-slow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+/* Natural slow spin animation */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
