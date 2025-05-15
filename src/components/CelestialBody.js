@@ -6,6 +6,8 @@ const CelestialBody = ({ type, position, isActive }) => {
   const elementRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [stars, setStars] = useState([]);
+  const [shootingStars, setShootingStars] = useState([]);
+  const [clouds, setClouds] = useState([]);
   const [initialized, setInitialized] = useState(false);
 
   // Generate stars on client-side only to avoid hydration mismatch
@@ -25,10 +27,44 @@ const CelestialBody = ({ type, position, isActive }) => {
       }));
     };
 
+    // Generate shooting stars
+    const generateShootingStars = (count) => {
+      return Array.from({ length: count }, (_, i) => ({
+        id: `shooting-${i}`,
+        delay: `${10 + Math.random() * 15}s`, // Random delay between 10-25s
+        duration: `${0.6 + Math.random() * 1.2}s`, // Random duration 0.6-1.8s
+        top: `${Math.random() * 60}%`,
+        left: `${Math.random() * 80}%`,
+        angle: Math.random() * 50 - 25, // Random angle between -25 and 25 degrees
+        size: 1 + Math.random() * 2,
+        tailLength: 50 + Math.random() * 100, // Length of the shooting star tail
+      }));
+    };
+
+    // Generate clouds
+    const generateClouds = (count) => {
+      return Array.from({ length: count }, (_, i) => ({
+        id: `cloud-${i}`,
+        size: 50 + Math.random() * 100, // Random size between 50-150px
+        top: `${10 + Math.random() * 60}%`,
+        initialLeft: i % 2 === 0 ? -20 : 100, // Start from left or right
+        direction: i % 2 === 0 ? 1 : -1, // Move right or left
+        speed: 30 + Math.random() * 60, // Random speed between 30-90
+        delay: `${Math.random() * 5}s`,
+        opacity: 0.6 + Math.random() * 0.3,
+        scale: 0.8 + Math.random() * 0.4,
+      }));
+    };
+
     if (!initialized) {
       const staticStars = generateStars(150, 'static');
       const twinklingStars = generateStars(40, 'twinkle');
+      const shootingStarsArray = generateShootingStars(5);
+      const cloudsArray = generateClouds(4);
+      
       setStars([...staticStars, ...twinklingStars]);
+      setShootingStars(shootingStarsArray);
+      setClouds(cloudsArray);
       setInitialized(true);
     }
   }, [initialized]);
@@ -106,6 +142,33 @@ const CelestialBody = ({ type, position, isActive }) => {
           />
         ))}
         
+        {/* Shooting stars */}
+        {shootingStars.map((star) => (
+          <div
+            key={star.id}
+            className="absolute"
+            style={{
+              top: star.top,
+              left: star.left,
+              zIndex: 3,
+              animation: `shooting-star ${star.duration} linear ${star.delay} infinite`,
+              opacity: 0,
+              transform: `rotate(${star.angle}deg)`,
+            }}
+          >
+            <div 
+              className="absolute"
+              style={{
+                width: `${star.tailLength}px`,
+                height: `${star.size}px`,
+                background: 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)',
+                borderRadius: '50px',
+                boxShadow: `0 0 ${star.size * 2}px ${star.size / 2}px rgba(255,255,255,0.8)`
+              }}
+            />
+          </div>
+        ))}
+        
         {/* Nebula/galaxy backgrounds */}
         <div className="absolute transition-all duration-1000 ease-in-out"
           style={{
@@ -122,6 +185,27 @@ const CelestialBody = ({ type, position, isActive }) => {
         />
       </div>
       
+      {/* Drifting clouds */}
+      {clouds.map((cloud) => (
+        <div
+          key={cloud.id}
+          className="absolute"
+          style={{
+            width: `${cloud.size}px`,
+            height: `${cloud.size * 0.6}px`,
+            top: cloud.top,
+            left: `${cloud.initialLeft}%`,
+            opacity: type === 'sun' ? cloud.opacity : cloud.opacity * 0.3,
+            background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.9) 20%, rgba(255,255,255,0.7) 50%, rgba(255,255,255,0) 100%)',
+            borderRadius: '50%',
+            filter: 'blur(10px)',
+            transform: `scale(${cloud.scale})`,
+            animation: `cloud-drift-${cloud.direction > 0 ? 'right' : 'left'} ${cloud.speed}s linear ${cloud.delay} infinite`,
+            zIndex: 8
+          }}
+        />
+      ))}
+      
       {/* Fixed positioning for celestial bodies */}
       <div 
         className={`absolute ${position === 'left' ? 'left-[10%]' : 'right-[10%]'} ${type === 'sun' ? 'bottom-[10%]' : 'top-[10%]'} transition-all duration-1000 ease-out`}
@@ -129,7 +213,8 @@ const CelestialBody = ({ type, position, isActive }) => {
           width: type === 'sun' ? '200px' : '180px',
           height: type === 'sun' ? '200px' : '180px',
           transform: `translateY(${type === 'sun' ? scrollProgress * 30 : -scrollProgress * 30}%) scale(${type === 'sun' ? 1 - scrollProgress * 0.2 : 0.8 + scrollProgress * 0.3})`,
-          zIndex: 5
+          zIndex: 5,
+          animation: `float-${type} 10s ease-in-out infinite`
         }}
       >
         {/* Actual celestial body */}
@@ -153,7 +238,8 @@ const CelestialBody = ({ type, position, isActive }) => {
                  0 0 140px 90px rgba(255, 140, 0, 0.2)`
               : `0 0 30px 10px rgba(230,230,230,0.3),
                  0 0 60px 30px rgba(230,230,230,0.1)`,
-            transform: `rotate(${scrollProgress * (type === 'sun' ? 20 : 10)}deg)`
+            transform: `rotate(${scrollProgress * (type === 'sun' ? 20 : 10)}deg)`,
+            animation: `spin-${type} ${type === 'sun' ? '60s' : '80s'} linear infinite`
           }}
         >
           {/* Sun-specific surface features */}
@@ -165,7 +251,8 @@ const CelestialBody = ({ type, position, isActive }) => {
                   background: 'radial-gradient(ellipse at center, rgba(255,255,255,0) 40%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 60%)',
                   filter: 'blur(5px)',
                   opacity: 0.8,
-                  animationDuration: '60s'
+                  animationDuration: '40s',
+                  animationDirection: 'reverse'
                 }}
               />
               
@@ -229,7 +316,8 @@ const CelestialBody = ({ type, position, isActive }) => {
             width: '180px',
             height: '180px',
             opacity: 1,
-            zIndex: 15
+            zIndex: 15,
+            animation: 'float-moon 10s ease-in-out infinite'
           }}
         >
           {[...Array(15)].map((_, i) => {

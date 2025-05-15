@@ -1,0 +1,15 @@
+/* Theme classes */
+.light-theme {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+.dark-theme {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+/* Gradient utilities */
+.bg-gradient-radial {
+  background-image: radial-gradient(var(--tw-gradient-stops));
+}

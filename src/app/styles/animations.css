@@ -1,0 +1,83 @@
+/* Custom animations */
+@keyframes pulse-slow {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.4; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shooting-star {
+  0% {
+    opacity: 0;
+    transform: translateX(0) translateY(0) rotate(var(--angle, -20deg));
+  }
+  5% {
+    opacity: 1;
+  }
+  15%, 100% {
+    opacity: 0;
+    transform: translateX(300px) translateY(100px) rotate(var(--angle, -20deg));
+  }
+}
+
+@keyframes float-sun {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  25% { transform: translateY(-8px) translateX(5px); }
+  50% { transform: translateY(0px) translateX(10px); }
+  75% { transform: translateY(8px) translateX(5px); }
+}
+
+@keyframes float-moon {
+  0%, 100% { transform: translateY(0px) translateX(0px); }
+  33% { transform: translateY(-12px) translateX(-8px); }
+  66% { transform: translateY(8px) translateX(5px); }
+}
+
+@keyframes spin-sun {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-moon {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes cloud-drift-right {
+  from { left: -20%; }
+  to { left: 120%; }
+}
+
+@keyframes cloud-drift-left {
+  from { left: 120%; }
+  to { left: -20%; }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 4s infinite ease-in-out;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 40s linear infinite;
+}
+
+.animate-twinkle {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.animate-fade-in {
+  animation: fade-in 1s forwards;
+}

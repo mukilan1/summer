@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       animation: {
         'pulse-slow': 'pulse-slow 4s infinite ease-in-out',
-        'spin-slow': 'spin-slow 40s linear infinite',
+        'spin-slow': 'spin-slow 60s linear infinite',
         'twinkle': 'twinkle 3s infinite ease-in-out',
         'fade-in': 'fade-in 1s forwards',
         'moon-phase': 'moon-phase 3s ease-in-out forwards',
@@ -18,16 +18,16 @@ module.exports = {
       },
       keyframes: {
         'pulse-slow': {
-          '0%, 100%': { opacity: 1 },
-          '50%': { opacity: 0.7 },
+          '0%, 100%': { opacity: '0.8' },
+          '50%': { opacity: '1' },
         },
         'spin-slow': {
           '0%': { transform: 'rotate(0deg)' },
           '100%': { transform: 'rotate(360deg)' },
         },
         'twinkle': {
-          '0%, 100%': { opacity: 0.8, transform: 'scale(1)' },
-          '50%': { opacity: 1, transform: 'scale(1.2)' },
+          '0%, 100%': { opacity: '0.4', transform: 'scale(0.8)' },
+          '50%': { opacity: '1', transform: 'scale(1.2)' },
         },
         'fade-in': {
           '0%': { opacity: 0 },
