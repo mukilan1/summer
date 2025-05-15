@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef } from 'react';
+import { forwardRef, useMemo } from 'react';
 import CelestialBody from './CelestialBody';
 
 const Section = forwardRef(({ 
@@ -48,6 +48,39 @@ const Section = forwardRef(({
   
   // Enhanced stars section check (fourth section)
   const isStarsSection = index === 3;
+  
+  // Generate deterministic star styles to avoid hydration mismatches
+  const starStyles = useMemo(() => {
+    return Array.from({ length: 30 }).map((_, i) => {
+      // Use deterministic values and format consistently for both client and server
+      const size = i % 10 === 0 ? 3 : i % 5 === 0 ? 2 : 1;
+      
+      // Format these consistently with fixed precision
+      const topPercentage = Math.floor((Math.sin(i * 0.5) * 0.5 + 0.5) * 10000) / 100;
+      const leftPercentage = Math.floor((Math.cos(i * 0.7) * 0.5 + 0.5) * 10000) / 100;
+      
+      // Use numerical values for opacity (not strings)
+      const opacity = i % 10 === 0 ? 0.9 : i % 5 === 0 ? 0.8 : 0.7;
+      
+      // Format animation delay consistently
+      const animationDelay = `${Math.floor((i * 0.3) % 5 * 100) / 100}s`;
+      
+      // Shadow size based on star size
+      const shadowSize = i % 10 === 0 ? 4 : i % 5 === 0 ? 3 : 1;
+      const shadowBlur = i % 10 === 0 ? 2 : i % 5 === 0 ? 1 : 0;
+      const shadowOpacity = i % 10 === 0 ? 0.9 : i % 5 === 0 ? 0.8 : 0.7;
+      
+      return {
+        width: `${size}px`,
+        height: `${size}px`,
+        top: `${topPercentage}%`,
+        left: `${leftPercentage}%`,
+        opacity: opacity,
+        animationDelay: animationDelay,
+        boxShadow: `0 0 ${shadowSize}px ${shadowBlur}px rgba(255,255,255,${shadowOpacity})`
+      };
+    });
+  }, []);
   
   return (
     <section 
@@ -152,20 +185,12 @@ const Section = forwardRef(({
                 {/* Enhanced night atmosphere visual element */}
                 <div className="absolute inset-0 bg-gradient-to-b from-indigo-900/60 via-purple-900/50 to-blue-900/40 rounded-xl"></div>
                 
-                {/* Enhanced night decorative elements for natural starry sky */}
-                {[...Array(30)].map((_, i) => (
+                {/* Enhanced night decorative elements for natural starry sky - using pre-computed deterministic styles */}
+                {starStyles.map((style, i) => (
                   <div 
                     key={`star-${i}`}
                     className="absolute rounded-full bg-white animate-twinkle"
-                    style={{
-                      width: `${i % 10 === 0 ? 3 : i % 5 === 0 ? 2 : 1}px`,
-                      height: `${i % 10 === 0 ? 3 : i % 5 === 0 ? 2 : 1}px`,
-                      top: `${(Math.sin(i * 0.5) * 0.5 + 0.5) * 100}%`,
-                      left: `${(Math.cos(i * 0.7) * 0.5 + 0.5) * 100}%`,
-                      opacity: i % 10 === 0 ? 0.9 : i % 5 === 0 ? 0.8 : 0.7,
-                      animationDelay: `${(i * 0.3) % 5}s`,
-                      boxShadow: `0 0 ${i % 10 === 0 ? 4 : i % 5 === 0 ? 3 : 1}px ${i % 10 === 0 ? 2 : i % 5 === 0 ? 1 : 0}px rgba(255,255,255,${i % 10 === 0 ? 0.9 : i % 5 === 0 ? 0.8 : 0.7})`
-                    }}
+                    style={style}
                   />
                 ))}
                 
